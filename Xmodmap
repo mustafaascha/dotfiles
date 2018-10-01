@@ -1,0 +1,13 @@
+clear lock
+clear control
+keycode 66  = Control_L 
+add control = Control_L Control_R
+
+remove mod4 = Super_L
+! super button
+keycode 133 = grave tilde
+! tilde button
+keycode 49  = Super_L
+! the tab button
+! keycode 23  = Super_L
+
