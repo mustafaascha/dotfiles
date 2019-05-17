@@ -1,15 +1,3 @@
-## https://csgillespie.github.io/efficientR/3-3-r-startup.html
-## local creates a new, empty environment
-## This avoids polluting the global environment with
-## the object r
-local({
-  r = getOption("repos")             
-  r["CRAN"] = "https://cran.rstudio.com/"
-  options(repos = r)
-})
-
-library(devtools)
-
 ## See http://gettinggeneticsdone.blogspot.com/2013/06/customize-rprofile.html
 
 ## Load packages
@@ -64,12 +52,12 @@ options("repos" = c(CRAN = "http://cran.rstudio.com/"))
 
 ## List objects and classes (from @_inundata, mod by ateucher)
 .env$lsa <- function() {
-{
     obj_type <- function(x) class(get(x, envir = .GlobalEnv)) # define environment
-    foo = data.frame(sapply(ls(envir = .GlobalEnv), obj_type))
-    foo$object_name = rownames(foo)
-    names(foo)[1] = "class"
-    names(foo)[2] = "object"
+    foo <- data.frame(sapply(ls(envir = .GlobalEnv), obj_type))
+    if (nrow(foo) == 0) return(data.frame())
+    foo$object_name <- rownames(foo)
+    names(foo)[1] <- "class"
+    names(foo)[2] <- "object"
     return(unrowname(foo))
 }
 
@@ -123,16 +111,17 @@ options("repos" = c(CRAN = "http://cran.rstudio.com/"))
     paste(abbrev.vec, collapse=", ")
 }
 
-meminfo <- function(){
+.env$meminfo <- function(){
   meminfo.df <- read.table("/proc/meminfo", sep=":", row.names=1)
   names(meminfo.df) <- c("text")
   meminfo.df$digits <- gsub("[^0-9]", "", meminfo.df$text)
   meminfo.df$unit <- ifelse(grepl("kB", meminfo.df$text), "kB", "pages")
   meminfo.df$value <- as.numeric(meminfo.df$digits)
   meminfo.df$megabytes <- as.integer(meminfo.df$value/1024)
+  meminfo.df
 }
 
-free <- function(){
+.env$free <- function(){
   free.lines <- system("free -m", intern=TRUE)
   df <- read.table(text=free.lines, sep=":", row.names=1)
   names(df) <- "values"
@@ -159,4 +148,5 @@ attach(.env)
 	# save command history here?
 	cat("\nGoodbye at ", date(), "\n")
 }
+
 
