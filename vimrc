@@ -33,6 +33,8 @@
 " Sets how many lines of history VIM has to remember
 set history=5000
 
+set number
+
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -77,7 +79,7 @@ endif
 set ruler
 
 " Height of the command bar
-set cmdheight=2
+" set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
 set hid
@@ -177,7 +179,7 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
+set shiftwidth=2
 set tabstop=2
 
 " Linebreak on 500 characters
